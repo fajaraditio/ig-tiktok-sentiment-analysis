@@ -110,11 +110,9 @@ Beranda
                 url: '/upload-ajax',
                 data: serializedData,
                 success: function (data) {
-                    let dataJSON = JSON.parse(data)
-
                     igTable.destroy()
                     igTable = $('table#ig-table').DataTable({
-                        data: dataJSON,
+                        data: data,
                         columns: [
                             { "data": "username" },
                             { "data": "comment" },
@@ -134,13 +132,9 @@ Beranda
                 url: '/upload-ajax',
                 data: serializedData,
                 success: function (data) {
-                    let dataJSON = JSON.parse(data)
-                    
-                    console.log(dataJSON)
-                    
                     ttTable.destroy()
                     ttTable = $('table#tt-table').DataTable({
-                        data: dataJSON,
+                        data: data,
                         columns: [
                             { "data": "username" },
                             { "data": "comment" },

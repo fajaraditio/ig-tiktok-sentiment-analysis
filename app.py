@@ -28,14 +28,14 @@ def upload_ajax():
             get_ig_comments(request.form.get('url_instagram_post'))
 
         text = pd.read_csv('uploads/instagram_src.csv', encoding='latin-1')
-        return text.to_json(orient='records')
+        return json.loads(text.to_json(orient='records'))
 
     elif (request.form.get('url_tiktok_post')):
         if (not os.path.exists('uploads/tiktok_src.csv')):
             get_tiktok_comments(request.form.get('url_tiktok_post'))
 
         text = pd.read_csv('uploads/tiktok_src.csv', encoding='latin-1')
-        return text.to_json(orient='records')
+        return json.loads(text.to_json(orient='records'))
 
 
 @app.route('/preprocessing')
@@ -50,7 +50,7 @@ def preprocessing_ajax():
 
         if (instagram_clean_f.is_file()):
             text = pd.read_csv('uploads/instagram_clean.csv', encoding='latin-1')
-            return text.to_json(orient='records')
+            return json.loads(text.to_json(orient='records'))
         else:
             text = pd.read_csv('uploads/instagram_src.csv', encoding='latin-1')
             json_text = text.to_json(orient='records')
@@ -81,7 +81,7 @@ def preprocessing_ajax():
 
         if (tiktok_clean_f.is_file()):
             text = pd.read_csv('uploads/tiktok_clean.csv', encoding='latin-1')
-            return text.to_json(orient='records')
+            return json.loads(text.to_json(orient='records'))
         else:
             text = pd.read_csv('uploads/tiktok_src.csv', encoding='latin-1')
             json_text = text.to_json(orient='records')
