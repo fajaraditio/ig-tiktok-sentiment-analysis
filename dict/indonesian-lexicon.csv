@@ -1682,7 +1682,7 @@ rumah tangga,2,2
 banyak,3,1
 dukung,4,1
 keluarga,4,1
-lengkap,2,1
+lengkap,5,1
 sedia,2,1
 teladan,4,1
 inap,2,1
@@ -1950,7 +1950,7 @@ jeblos,1,1
 serempak,3,1
 satu,3,1
 saji,4,1
-fasilitas,2,1
+fasilitas,5,1
 lukis,2,1
 tentang,1,1
 tutur,3,1
@@ -5392,7 +5392,7 @@ kedaluwarsa,-3,1
 kocak,-2,1
 eror,-4,1
 kenceng,-2,1
-sehat,-1,1
+sehat,4,1
 melar,-2,1
 death,-3,1
 inkarnasi,-1,1
@@ -6321,7 +6321,6 @@ gencet,-5,1
 termuat,-3,1
 membersihkan,-5,1
 mewalakkan,-5,1
-unit,-4,1
 menjaga,-3,1
 anjungan,-3,1
 tahi angin,-4,2
@@ -9148,7 +9147,7 @@ beol,-5,1
 caruk,-4,1
 mencengkam,-4,1
 kenan,-3,1
-bagus,-4,1
+bagus,5,1
 berbanding,-3,1
 carut,-5,1
 sipongang,-3,1

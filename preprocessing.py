@@ -5,8 +5,7 @@ from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFacto
 import pandas as pd
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-
-def preprocessing(text):
+def preprocessing_text(text):
     # inisialisasi stopword list dengan Sastrawi
     stop_factory = StopWordRemoverFactory()
     stop_word_list = stop_factory.get_stop_words()
@@ -38,7 +37,7 @@ def preprocessing(text):
     return text
 
 
-def labeling(text):
+def labeling_text(text):
     lexicon_csv = pd.read_csv(
         'dict/indonesian-lexicon.csv', encoding='latin-1')
     lexicon_csv.drop('number_of_words', inplace=True, axis=1)
@@ -62,12 +61,3 @@ def labeling(text):
         return "neg"
     else:
         return "neu"
-
-
-factory = StemmerFactory()
-stemmer = factory.create_stemmer()
-
-preprocessed_text = preprocessing("Gym nya kurang besar min")
-labelled_text = labeling(preprocessed_text)
-
-print(labelled_text)

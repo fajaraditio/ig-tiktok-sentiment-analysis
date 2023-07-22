@@ -6,63 +6,31 @@ Beranda
 
 {%block content %}
 
-<div class="row">
-    <div class="col-12 col-md-6">
-        <div class="card">
-            <form method="post" id="process-instagram">
-                <div class="card-header">
-                    <h3 class="card-title">Fetch Dataset</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <label for="url_instagram_post">URL Postingan Instagram</label>
-                    <input type="text" name="url_instagram_post" id="url_instagram_post" class="form-control">
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer clearfix">
-                    <button type="submit" class="btn btn-primary">Proses Fetching
-                        Instagram</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="col-12 col-md-6">
-        <div class="card">
-            <form method="post" id="process-tiktok">
-                <div class="card-header">
-                    <h3 class="card-title">Fetch Dataset</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <label for="url_tiktok_post">URL Postingan TikTok</label>
-                    <input type="text" name="url_tiktok_post" id="url_tiktok_post" class="form-control">
-
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer clearfix">
-                    <button type="submit" class="btn btn-primary">Proses Fetching
-                        TikTok</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <!-- Approach -->
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Menampilkan Data</h6>
+                <h6 class="m-0 font-weight-bold">Pre-processing data Instagram</h6>
             </div>
             <div class="card-body">
                 <p>Data Instagram</p>
+
+                <div class="my-3">
+                    <form method="post" id="process-instagram">
+                        <input type="hidden" name="preprocessing_ig" value="1">
+                        <button type="submit" class="btn btn-primary">Pre-processing Instagram</button>
+                    </form>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table" id="ig-table">
                         <thead>
                             <tr>
                                 <th>Username</th>
                                 <th>Comments</th>
+                                <th>Clean Comments</th>
+                                <th>Label</th>
                             </tr>
                         </thead>
                     </table>
@@ -73,16 +41,26 @@ Beranda
     <div class="col-12 col-md-6">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Menampilkan Data</h6>
+                <h6 class="m-0 font-weight-bold">Pre-processing data TikTok</h6>
             </div>
             <div class="card-body">
                 <p>Data TikTok</p>
+
+                <div class="my-3">
+                    <form method="post" id="process-tiktok">
+                        <input type="hidden" name="preprocessing_tt" value="1">
+                        <button type="submit" class="btn btn-primary">Pre-processing TikTok</button>
+                    </form>
+                </div>
+
                 <div class="table-responsive w-100">
                     <table class="table" id="tt-table">
                         <thead>
                             <tr>
                                 <th>Username</th>
                                 <th>Comments</th>
+                                <th>Clean Comments</th>
+                                <th>Label</th>
                             </tr>
                     </table>
                 </div>
@@ -107,17 +85,17 @@ Beranda
 
             $.ajax({
                 method: 'POST',
-                url: '/upload-ajax',
+                url: '/preprocessing-ajax',
                 data: serializedData,
                 success: function (data) {
-                    let dataJSON = JSON.parse(data)
-
                     igTable.destroy()
                     igTable = $('table#ig-table').DataTable({
-                        data: dataJSON,
+                        data: data,
                         columns: [
                             { "data": "username" },
                             { "data": "comment" },
+                            { "data": "clean_comment" },
+                            { "data": "label" },
                         ]
                     })
                 }
@@ -131,19 +109,18 @@ Beranda
 
             $.ajax({
                 method: 'POST',
-                url: '/upload-ajax',
+                url: '/preprocessing-ajax',
                 data: serializedData,
                 success: function (data) {
-                    let dataJSON = JSON.parse(data)
-                    
-                    console.log(dataJSON)
-                    
+
                     ttTable.destroy()
                     ttTable = $('table#tt-table').DataTable({
-                        data: dataJSON,
+                        data: data,
                         columns: [
                             { "data": "username" },
                             { "data": "comment" },
+                            { "data": "clean_comment" },
+                            { "data": "label" },
                         ]
                     })
                 }

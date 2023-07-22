@@ -1,7 +1,9 @@
 from flask import Flask, request, flash, render_template, jsonify
 from fetcher import get_ig_comments, get_tiktok_comments
+from preprocessing import preprocessing_text, labeling_text
 import pandas as pd
 import os
+import json
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -34,6 +36,50 @@ def upload_ajax():
         text = pd.read_csv('uploads/tiktok_src.csv', encoding='latin-1')
         return text.to_json(orient='records')
 
+
 @app.route('/preprocessing')
 def preprocessing():
     return render_template('preprocessing.html')
+
+
+@app.route('/preprocessing-ajax', methods=['POST'])
+def preprocessing_ajax():
+    if (request.form.get('preprocessing_ig')):
+        if (not os.path.exists('uploads/instagram_src.csv')):
+            return {'data': 'empty'}
+
+        text = pd.read_csv('uploads/instagram_src.csv', encoding='latin-1')
+        json_text = text.to_json(orient='records')
+        json_text = json.loads(json_text)
+
+        comments = []
+        for comment in json_text:
+            username = comment['username']
+            comment_text = comment['comment']
+            clean_comment = preprocessing_text(comment_text)
+            labeled_comment = labeling_text(clean_comment)
+
+            comments.append({'username': username, 'comment': comment_text,
+                            'clean_comment': clean_comment, 'label': labeled_comment})
+
+        return comments
+
+    elif (request.form.get('preprocessing_tt')):
+        if (not os.path.exists('uploads/tiktok_src.csv')):
+            return {'data': 'empty'}
+
+        text = pd.read_csv('uploads/tiktok_src.csv', encoding='latin-1')
+        json_text = text.to_json(orient='records')
+        json_text = json.loads(json_text)
+
+        comments = []
+        for comment in json_text:
+            username = comment['username']
+            comment_text = comment['comment']
+            clean_comment = preprocessing_text(comment_text)
+            labeled_comment = labeling_text(clean_comment)
+
+            comments.append({'username': username, 'comment': comment_text,
+                            'clean_comment': clean_comment, 'label': labeled_comment})
+
+        return comments
