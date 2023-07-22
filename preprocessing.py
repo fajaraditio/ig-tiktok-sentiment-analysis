@@ -5,6 +5,7 @@ from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFacto
 import pandas as pd
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
+
 def preprocessing_text(text):
     # inisialisasi stopword list dengan Sastrawi
     stop_factory = StopWordRemoverFactory()
@@ -37,7 +38,7 @@ def preprocessing_text(text):
     return text
 
 
-def labeling_text(text):
+def sentiment(text):
     lexicon_csv = pd.read_csv(
         'dict/indonesian-lexicon.csv', encoding='latin-1')
     lexicon_csv.drop('number_of_words', inplace=True, axis=1)
@@ -54,6 +55,11 @@ def labeling_text(text):
     sia.lexicon.update(new_lexicon_json)
 
     sentiment_dict = sia.polarity_scores(text)
+
+    return sentiment_dict
+
+def labeling_text(text):
+    sentiment_dict = sentiment(text)
 
     if sentiment_dict['compound'] >= 0.05:
         return "pos"
