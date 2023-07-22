@@ -1,4 +1,5 @@
 flask
 pandas
-apify-clien
-textblob
+apify-client
+sastrawi
+pathlib
