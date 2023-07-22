@@ -135,7 +135,9 @@ Beranda
                 data: serializedData,
                 success: function (data) {
                     let dataJSON = JSON.parse(data)
-
+                    
+                    console.log(dataJSON)
+                    
                     ttTable.destroy()
                     ttTable = $('table#tt-table').DataTable({
                         data: dataJSON,
