@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Beranda
+{% endblock %}
+
+{%block content %}
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="card">
+            <form method="post" id="process-instagram">
+                <div class="card-header">
+                    <h3 class="card-title">Fetch Dataset</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <label for="url_instagram_post">URL Postingan Instagram</label>
+                    <input type="text" name="url_instagram_post" id="url_instagram_post" class="form-control">
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <button type="submit" class="btn btn-primary">Proses Fetching
+                        Instagram</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="card">
+            <form method="post" id="process-tiktok">
+                <div class="card-header">
+                    <h3 class="card-title">Fetch Dataset</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <label for="url_tiktok_post">URL Postingan TikTok</label>
+                    <input type="text" name="url_tiktok_post" id="url_tiktok_post" class="form-control">
+
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <button type="submit" class="btn btn-primary">Proses Fetching
+                        TikTok</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Approach -->
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Menampilkan Data</h6>
+            </div>
+            <div class="card-body">
+                <p>Data Instagram</p>
+                <div class="table-responsive">
+                    <table class="table" id="ig-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Menampilkan Data</h6>
+            </div>
+            <div class="card-body">
+                <p>Data TikTok</p>
+                <div class="table-responsive w-100">
+                    <table class="table" id="tt-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Comments</th>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+    $().ready(function () {
+        let igTable = $('table#ig-table').DataTable()
+        let ttTable = $('table#tt-table').DataTable()
+
+        $('form#process-instagram').submit(function (e) {
+            e.preventDefault()
+
+            let serializedData = $(this).serialize()
+
+            $.ajax({
+                method: 'POST',
+                url: '/upload-ajax',
+                data: serializedData,
+                success: function (data) {
+                    let dataJSON = JSON.parse(data)
+
+                    igTable.destroy()
+                    igTable = $('table#ig-table').DataTable({
+                        data: dataJSON,
+                        columns: [
+                            { "data": "username" },
+                            { "data": "comment" },
+                        ]
+                    })
+                }
+            })
+        })
+
+        $('form#process-tiktok').submit(function (e) {
+            e.preventDefault()
+
+            let serializedData = $(this).serialize()
+
+            $.ajax({
+                method: 'POST',
+                url: '/upload-ajax',
+                data: serializedData,
+                success: function (data) {
+                    let dataJSON = JSON.parse(data)
+                    
+                    console.log(dataJSON)
+                    
+                    ttTable.destroy()
+                    ttTable = $('table#tt-table').DataTable({
+                        data: dataJSON,
+                        columns: [
+                            { "data": "username" },
+                            { "data": "comment" },
+                        ]
+                    })
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}
