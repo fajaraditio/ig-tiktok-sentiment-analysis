@@ -52,7 +52,7 @@ def sentiment(text):
         new_lexicon_json[new_lexicon['word']] = new_lexicon['weight']
 
     sia = SentimentIntensityAnalyzer()
-    sia.lexicon.update(new_lexicon_json)
+    sia.lexicon.update(new_lexicon_json) # update menggunakan data leksikon indonesia (dict/indonesian-lexicon.csv)
 
     sentiment_dict = sia.polarity_scores(text)
 

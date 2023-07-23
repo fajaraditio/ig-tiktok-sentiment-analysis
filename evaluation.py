@@ -10,18 +10,15 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report, accuracy_score, multilabel_confusion_matrix
 
 
-def mapping(clean_data):
-    # netral, negatif, positif = y_test['label'].value_counts()
-    # total = positif + negatif + netral
-    # print(y_test['label'].value_counts() )
+def mapping(csv):
+    df = csv.fillna(' ')
 
-    # pie_labels = labels
-    # pie_colors = colors
-    # pie_values = [positif, negatif, netral]
+    pos = len(df[df['label'] == 'pos'])
+    neg = len(df[df['label'] == 'neg'])
+    neu = len(df[df['label'] == 'neu'])
+    total = pos + neg + neu
 
-    # bar_labels = labels
-    # bar_values = [positif, negatif, netral]
-    return ''
+    return pos, neg, neu, total
 
 
 def evaluating_data(csv):
@@ -44,7 +41,8 @@ def evaluating_data(csv):
     mnb.fit(x_train, y_train)
     y_mnb = mnb.predict(x_test)
 
-    mnb_classification_report = classification_report(y_test, y_mnb, target_names=['pos', 'neg', 'neu'], output_dict=True)
+    mnb_classification_report = classification_report(
+        y_test, y_mnb, target_names=['pos', 'neg', 'neu'], output_dict=True)
     mnb_accuracy = accuracy_score(y_test, y_mnb)
 
     return mnb_classification_report, mnb_accuracy

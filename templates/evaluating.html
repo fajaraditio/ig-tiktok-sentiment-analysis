@@ -25,12 +25,152 @@ Evaluasi Data
     </div>
 </div>
 
+<div class="row d-none" id="statistic">
+    <div class="col-12 col-md-6">
+        <div class="card my-3">
+            <h4 class="card-header">Hasil Sentimen: Instagram</h4>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <!-- small box -->
+                        <div class="small-box" style="background: #E1306C;">
+                            <div class="inner text-white">
+                                <h3 id="ig_pos"></h3>
+
+                                <p>Positif</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <!-- small box -->
+                        <div class="small-box text-white" style="background: #E1306C;">
+                            <div class="inner">
+                                <h3 id="ig_neg"></h3>
+
+                                <p>Negatif</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <!-- small box -->
+                        <div class="small-box text-white" style="background: #E1306C;">
+                            <div class="inner">
+                                <h3 id="ig_neu"></h3>
+
+                                <p>Netral</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <!-- small box -->
+                        <div class="small-box text-white" style="background: #E1306C;">
+                            <div class="inner">
+                                <h3 id="ig_total"></h3>
+
+                                <p>Total</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card my-3">
+            <h4 class="card-header">Visualisasi Sentimen: Instagram</h4>
+            <div class="card-body">
+                <canvas id="instagram-pie-chart" style="width: 50vw; height: 50vh;"></canvas>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="card my-3">
+            <h4 class="card-header">Hasil Sentimen: TikTok</h4>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <!-- small box -->
+                        <div class="small-box" style="background: #00f2ea;">
+                            <div class="inner">
+                                <h3 id="tt_pos"></h3>
+
+                                <p>Positif</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <!-- small box -->
+                        <div class="small-box" style="background: #00f2ea;">
+                            <div class="inner">
+                                <h3 id="tt_neg"></h3>
+
+                                <p>Negatif</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <!-- small box -->
+                        <div class="small-box" style="background: #00f2ea;">
+                            <div class="inner">
+                                <h3 id="tt_neu"></h3>
+
+                                <p>Netral</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <!-- small box -->
+                        <div class="small-box" style="background: #00f2ea;">
+                            <div class="inner">
+                                <h3 id="tt_total"></h3>
+
+                                <p>Total</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card my-3">
+            <h4 class="card-header">Visualisasi Sentimen: TikTok</h4>
+            <div class="card-body">
+                <canvas id="tiktok-pie-chart" style="width: 50vw; height: 50vh;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block script %}
 
 <script>
     $().ready(function () {
+
         $('form#evaluating').submit(function (e) {
             e.preventDefault()
 
@@ -41,10 +181,72 @@ Evaluasi Data
                 url: '/evaluating-process',
                 data: serializedData,
                 success: function (data) {
-                    console.log(data)
+                    $('#statistic').removeClass('d-none')
+
+                    $('h3#ig_pos').text(data.instagram.chart.pos)
+                    $('h3#ig_neg').text(data.instagram.chart.neg)
+                    $('h3#ig_neu').text(data.instagram.chart.neu)
+                    $('h3#ig_total').text(data.instagram.chart.total)
+
+                    $('h3#tt_pos').text(data.tiktok.chart.pos)
+                    $('h3#tt_neg').text(data.tiktok.chart.neg)
+                    $('h3#tt_neu').text(data.tiktok.chart.neu)
+                    $('h3#tt_total').text(data.tiktok.chart.total)
+
+
+                    // Set new default font family and font color to mimic Bootstrap's default styling
+                    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+                    Chart.defaults.global.defaultFontColor = '#858796';
+
+                    // Instagram Chart
+                    let igChartLabel = ['Positif', 'Negatif', 'Netral']
+                    let igChartData = [data.instagram.chart.pos, data.instagram.chart.neg, data.instagram.chart.neu]
+                    let igChartColor = ['#405DE6', '#F77737', '#E1306C']
+
+                    createPieChart('instagram-pie-chart', igChartLabel, igChartData, igChartColor)
+
+                    // TikTok Chart
+                    let ttChartLabel = ['Positif', 'Negatif', 'Netral']
+                    let ttChartData = [data.tiktok.chart.pos, data.tiktok.chart.neg, data.tiktok.chart.neu]
+                    let ttChartColor = ['#ff0050', '#000000', '#00f2ea']
+
+                    createPieChart('tiktok-pie-chart', ttChartLabel, ttChartData, ttChartColor)
                 }
             })
         })
+
+        function createPieChart(elementId, label, data, color) {
+            var ctx = document.getElementById(elementId);
+
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: label,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: color,
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: true
+                    },
+                },
+            });
+
+        }
     })
 </script>
 {% endblock %}

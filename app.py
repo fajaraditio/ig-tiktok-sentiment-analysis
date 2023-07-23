@@ -50,7 +50,8 @@ def preprocessing_ajax():
         instagram_clean_f = Path('uploads/instagram_clean.csv')
 
         if (instagram_clean_f.is_file()):
-            text = pd.read_csv('uploads/instagram_clean.csv', encoding='latin-1')
+            text = pd.read_csv(
+                'uploads/instagram_clean.csv', encoding='latin-1')
             return json.loads(text.to_json(orient='records'))
         else:
             text = pd.read_csv('uploads/instagram_src.csv', encoding='latin-1')
@@ -67,12 +68,13 @@ def preprocessing_ajax():
 
                 comments.append({'username': username, 'comment': comment_text,
                                 'clean_comment': clean_comment, 'label': labeled_comment,
-                                'pos': sentiment_result['pos'], 'neg': sentiment_result['neg'], 'neu': sentiment_result['neu'],
-                                'compound': sentiment_result['compound']})
+                                 'pos': sentiment_result['pos'], 'neg': sentiment_result['neg'], 'neu': sentiment_result['neu'],
+                                 'compound': sentiment_result['compound']})
 
             pd.DataFrame(comments).to_csv(
                 'uploads/instagram_clean.csv',
-                header=['username', 'comment', 'clean_comment', 'label', 'pos', 'neg', 'neu', 'compound'],
+                header=['username', 'comment', 'clean_comment',
+                        'label', 'pos', 'neg', 'neu', 'compound'],
                 index=False, doublequote=True)
 
             return comments
@@ -98,35 +100,54 @@ def preprocessing_ajax():
 
                 comments.append({'username': username, 'comment': comment_text,
                                 'clean_comment': clean_comment, 'label': labeled_comment,
-                                'pos': sentiment_result['pos'], 'neg': sentiment_result['neg'], 'neu': sentiment_result['neu'],
-                                'compound': sentiment_result['compound']})
+                                 'pos': sentiment_result['pos'], 'neg': sentiment_result['neg'], 'neu': sentiment_result['neu'],
+                                 'compound': sentiment_result['compound']})
 
             pd.DataFrame(comments).to_csv(
                 'uploads/tiktok_clean.csv',
-                header=['username', 'comment', 'clean_comment', 'label', 'pos', 'neg', 'neu', 'compound'],
+                header=['username', 'comment', 'clean_comment',
+                        'label', 'pos', 'neg', 'neu', 'compound'],
                 index=False, doublequote=True)
 
             return comments
+
 
 @app.route('/evaluating')
 def evaluating():
     return render_template('evaluating.html')
 
+
 @app.route('/evaluating-process', methods=['POST'])
 def evaluating_process():
-    instagram_text = pd.read_csv('uploads/instagram_clean.csv', encoding='latin-1')
+    instagram_text = pd.read_csv(
+        'uploads/instagram_clean.csv', encoding='latin-1')
     tiktok_text = pd.read_csv('uploads/tiktok_clean.csv', encoding='latin-1')
 
     ig_classification_report, ig_accuracy = evaluating_data(instagram_text)
     tt_classification_report, tt_accuracy = evaluating_data(tiktok_text)
 
+    ig_pos, ig_neg, ig_neu, ig_total = mapping(instagram_text)
+    tt_pos, tt_neg, tt_neu, tt_total = mapping(tiktok_text)
+
     return {
         "instagram": {
             "ig_classification_report": ig_classification_report,
             "ig_accuracy": ig_accuracy,
+            "chart": {
+                "pos": ig_pos,
+                "neg": ig_neg,
+                "neu": ig_neu,
+                "total": ig_total
+            }
         },
         "tiktok": {
             "tt_classification_report": tt_classification_report,
             "tt_accuracy": tt_accuracy,
+            "chart": {
+                "pos": tt_pos,
+                "neg": tt_neg,
+                "neu": tt_neu,
+                "total": tt_total
+            }
         }
     }
