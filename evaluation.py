@@ -43,6 +43,6 @@ def evaluating_data(csv):
 
     mnb_classification_report = classification_report(
         y_test, y_mnb, target_names=['pos', 'neg', 'neu'], output_dict=True)
-    mnb_accuracy = accuracy_score(y_test, y_mnb)
+    mnb_accuracy = round(accuracy_score(y_test, y_mnb), 2) * 100
 
     return mnb_classification_report, mnb_accuracy

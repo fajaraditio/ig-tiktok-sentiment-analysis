@@ -86,14 +86,69 @@ Evaluasi Data
                 </div>
             </div>
         </div>
-
         <div class="card my-3">
             <h4 class="card-header">Visualisasi Sentimen: Instagram</h4>
             <div class="card-body">
                 <canvas id="instagram-pie-chart" style="width: 50vw; height: 50vh;"></canvas>
             </div>
         </div>
+        <div class="card my-3">
+            <h4 class="card-header">Klasifikasi Laporan: Instagram</h4>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- small box -->
+                        <div class="small-box" style="background: #00f2ea;">
+                            <div class="inner">
+                                <h3 id="ig_accuracy_score"></h3>
 
+                                <p>Accuration Score</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>F1-Score</th>
+                                        <th>Recall</th>
+                                        <th>Precision</th>
+                                        <th>Support</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Positif</td>
+                                        <td id="ig_pos_f1_score"></td>
+                                        <td id="ig_pos_recall"></td>
+                                        <td id="ig_pos_precision"></td>
+                                        <td id="ig_pos_support"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Negatif</td>
+                                        <td id="ig_neg_f1_score"></td>
+                                        <td id="ig_neg_recall"></td>
+                                        <td id="ig_neg_precision"></td>
+                                        <td id="ig_neg_support"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Netral</td>
+                                        <td id="ig_neu_f1_score"></td>
+                                        <td id="ig_neu_recall"></td>
+                                        <td id="ig_neu_precision"></td>
+                                        <td id="ig_neu_support"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-12 col-md-6">
         <div class="card my-3">
@@ -161,6 +216,63 @@ Evaluasi Data
                 <canvas id="tiktok-pie-chart" style="width: 50vw; height: 50vh;"></canvas>
             </div>
         </div>
+        <div class="card my-3">
+            <h4 class="card-header">Klasifikasi Laporan: TikTok</h4>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- small box -->
+                        <div class="small-box" style="background: #00f2ea;">
+                            <div class="inner">
+                                <h3 id="tt_accuracy_score"></h3>
+
+                                <p>Accuration Score</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>F1-Score</th>
+                                        <th>Recall</th>
+                                        <th>Precision</th>
+                                        <th>Support</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Positif</td>
+                                        <td id="tt_pos_f1_score"></td>
+                                        <td id="tt_pos_recall"></td>
+                                        <td id="tt_pos_precision"></td>
+                                        <td id="tt_pos_support"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Negatif</td>
+                                        <td id="tt_neg_f1_score"></td>
+                                        <td id="tt_neg_recall"></td>
+                                        <td id="tt_neg_precision"></td>
+                                        <td id="tt_neg_support"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Netral</td>
+                                        <td id="tt_neu_f1_score"></td>
+                                        <td id="tt_neu_recall"></td>
+                                        <td id="tt_neu_precision"></td>
+                                        <td id="tt_neu_support"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -187,12 +299,37 @@ Evaluasi Data
                     $('h3#ig_neg').text(data.instagram.chart.neg)
                     $('h3#ig_neu').text(data.instagram.chart.neu)
                     $('h3#ig_total').text(data.instagram.chart.total)
+                    $('h3#ig_accuracy_score').text(data.instagram.ig_accuracy + '%')
+                    $('table td#ig_pos_f1_score').text(data.instagram.ig_classification_report.pos['f1-score'])
+                    $('table td#ig_pos_precision').text(data.instagram.ig_classification_report.pos['precision'])
+                    $('table td#ig_pos_recall').text(data.instagram.ig_classification_report.pos['recall'])
+                    $('table td#ig_pos_support').text(data.instagram.ig_classification_report.pos['support'])
+                    $('table td#ig_neg_f1_score').text(data.instagram.ig_classification_report.neg['f1-score'])
+                    $('table td#ig_neg_precision').text(data.instagram.ig_classification_report.neg['precision'])
+                    $('table td#ig_neg_recall').text(data.instagram.ig_classification_report.neg['recall'])
+                    $('table td#ig_neg_support').text(data.instagram.ig_classification_report.neg['support'])
+                    $('table td#ig_neu_f1_score').text(data.instagram.ig_classification_report.neu['f1-score'])
+                    $('table td#ig_neu_precision').text(data.instagram.ig_classification_report.neu['precision'])
+                    $('table td#ig_neu_recall').text(data.instagram.ig_classification_report.neu['recall'])
+                    $('table td#ig_neu_support').text(data.instagram.ig_classification_report.neu['support'])
 
                     $('h3#tt_pos').text(data.tiktok.chart.pos)
                     $('h3#tt_neg').text(data.tiktok.chart.neg)
                     $('h3#tt_neu').text(data.tiktok.chart.neu)
                     $('h3#tt_total').text(data.tiktok.chart.total)
-
+                    $('h3#tt_accuracy_score').text(data.tiktok.tt_accuracy + '%')
+                    $('table td#tt_pos_f1_score').text(data.tiktok.tt_classification_report.pos['f1-score'])
+                    $('table td#tt_pos_precision').text(data.tiktok.tt_classification_report.pos['precision'])
+                    $('table td#tt_pos_recall').text(data.tiktok.tt_classification_report.pos['recall'])
+                    $('table td#tt_pos_support').text(data.tiktok.tt_classification_report.pos['support'])
+                    $('table td#tt_neg_f1_score').text(data.tiktok.tt_classification_report.neg['f1-score'])
+                    $('table td#tt_neg_precision').text(data.tiktok.tt_classification_report.neg['precision'])
+                    $('table td#tt_neg_recall').text(data.tiktok.tt_classification_report.neg['recall'])
+                    $('table td#tt_neg_support').text(data.tiktok.tt_classification_report.neg['support'])
+                    $('table td#tt_neu_f1_score').text(data.tiktok.tt_classification_report.neu['f1-score'])
+                    $('table td#tt_neu_precision').text(data.tiktok.tt_classification_report.neu['precision'])
+                    $('table td#tt_neu_recall').text(data.tiktok.tt_classification_report.neu['recall'])
+                    $('table td#tt_neu_support').text(data.tiktok.tt_classification_report.neu['support'])
 
                     // Set new default font family and font color to mimic Bootstrap's default styling
                     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
