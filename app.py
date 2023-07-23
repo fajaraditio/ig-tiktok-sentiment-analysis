@@ -2,6 +2,7 @@ from flask import Flask, request, flash, render_template, jsonify
 from pathlib import Path
 from fetcher import get_ig_comments, get_tiktok_comments
 from preprocessing import sentiment, preprocessing_text, labeling_text
+from evaluation import evaluating_data, mapping
 import pandas as pd
 import os
 import json
@@ -72,7 +73,7 @@ def preprocessing_ajax():
             pd.DataFrame(comments).to_csv(
                 'uploads/instagram_clean.csv',
                 header=['username', 'comment', 'clean_comment', 'label', 'pos', 'neg', 'neu', 'compound'],
-                index=False)
+                index=False, doublequote=True)
 
             return comments
 
@@ -103,6 +104,29 @@ def preprocessing_ajax():
             pd.DataFrame(comments).to_csv(
                 'uploads/tiktok_clean.csv',
                 header=['username', 'comment', 'clean_comment', 'label', 'pos', 'neg', 'neu', 'compound'],
-                index=False)
+                index=False, doublequote=True)
 
             return comments
+
+@app.route('/evaluating')
+def evaluating():
+    return render_template('evaluating.html')
+
+@app.route('/evaluating-process', methods=['POST'])
+def evaluating_process():
+    instagram_text = pd.read_csv('uploads/instagram_clean.csv', encoding='latin-1')
+    tiktok_text = pd.read_csv('uploads/tiktok_clean.csv', encoding='latin-1')
+
+    ig_classification_report, ig_accuracy = evaluating_data(instagram_text)
+    tt_classification_report, tt_accuracy = evaluating_data(tiktok_text)
+
+    return {
+        "instagram": {
+            "ig_classification_report": ig_classification_report,
+            "ig_accuracy": ig_accuracy,
+        },
+        "tiktok": {
+            "tt_classification_report": tt_classification_report,
+            "tt_accuracy": tt_accuracy,
+        }
+    }

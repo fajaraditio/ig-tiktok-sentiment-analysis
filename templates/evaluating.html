@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Evaluasi Data
+{% endblock %}
+
+{%block content %}
+
+<!-- Approach -->
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-body py-3">
+                <h5 class="m-0 font-weight-normal">Evaluasi Data</h5> <br>
+
+                <p>Proses evaluasi data bla bla bla</p>
+            </div>
+            <div class="card-footer">
+                <form method="post" id="evaluating">
+                    <input type="hidden" name="evaluating" value="1">
+                    <button class="btn btn-primary">Proses Evaluasi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+    $().ready(function () {
+        $('form#evaluating').submit(function (e) {
+            e.preventDefault()
+
+            let serializedData = $(this).serialize()
+
+            $.ajax({
+                method: 'POST',
+                url: '/evaluating-process',
+                data: serializedData,
+                success: function (data) {
+                    console.log(data)
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}
