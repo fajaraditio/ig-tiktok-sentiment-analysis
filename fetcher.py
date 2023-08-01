@@ -1,5 +1,7 @@
 from apify_client import ApifyClient
 import pandas as pd
+import os
+
 
 def get_ig_comments(url):
     APIFY_TOKEN = 'apify_api_qDAntUROedXheACajglcVKG9OdEVj11O2BHC'
@@ -21,11 +23,17 @@ def get_ig_comments(url):
 
     exported_comments = []
     for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-        exported_comment = [item['ownerUsername'], item['text'].replace('\n', '')]
+        exported_comment = [item['ownerUsername'],
+                            item['text'].replace('\n', '')]
         exported_comments.append(exported_comment)
 
-    csv_data = pd.DataFrame(exported_comments).to_csv(
-        'uploads/instagram_src.csv', header=['username', 'comment'], index=False)
+    if (not os.path.exists('uploads/instagram_src.csv')):
+        csv_data = pd.DataFrame(exported_comments).to_csv(
+            'uploads/instagram_src.csv', header=['username', 'comment'], index=False)
+    else:
+        csv_data = pd.DataFrame(exported_comments).to_csv(
+            'uploads/instagram_src.csv', mode='a', index=False, header=False)
+
 
 def get_tiktok_comments(url):
     APIFY_TOKEN = 'apify_api_qDAntUROedXheACajglcVKG9OdEVj11O2BHC'
@@ -51,5 +59,9 @@ def get_tiktok_comments(url):
         exported_comment = [item['uniqueId'], item['text'].replace('\n', '')]
         exported_comments.append(exported_comment)
 
-    csv_data = pd.DataFrame(exported_comments).to_csv(
+    if (not os.path.exists('uploads/tiktok_src.csv')):
+        csv_data = pd.DataFrame(exported_comments).to_csv(
         'uploads/tiktok_src.csv', header=['username', 'comment'], index=False)
+    else:
+        csv_data = pd.DataFrame(exported_comments).to_csv(
+            'uploads/tiktok_src.csv', mode='a', index=False, header=False)
