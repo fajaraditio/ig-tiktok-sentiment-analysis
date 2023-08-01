@@ -16,11 +16,11 @@ Beranda
                 <!-- /.card-header -->
                 <div class="card-body">
                     <label for="url_instagram_post">URL Postingan Instagram</label>
-                    <input type="text" name="url_instagram_post" id="url_instagram_post" class="form-control">
+                    <input type="text" name="url_instagram_post" id="url_instagram_post" class="form-control" autocomplete="off">
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    <button type="submit" class="btn btn-primary">Proses Fetching
+                    <button type="submit" id="fetch-instagram" class="btn btn-primary">Proses Fetching
                         Instagram</button>
                 </div>
             </form>
@@ -35,12 +35,12 @@ Beranda
                 <!-- /.card-header -->
                 <div class="card-body">
                     <label for="url_tiktok_post">URL Postingan TikTok</label>
-                    <input type="text" name="url_tiktok_post" id="url_tiktok_post" class="form-control">
+                    <input type="text" name="url_tiktok_post" id="url_tiktok_post" class="form-control" autocomplete="off">
 
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    <button type="submit" class="btn btn-primary">Proses Fetching
+                    <button type="submit" id="fetch-tiktok" class="btn btn-primary">Proses Fetching
                         TikTok</button>
                 </div>
             </form>
@@ -105,6 +105,9 @@ Beranda
 
             let serializedData = $(this).serialize()
 
+            $('button#fetch-instagram').text('Sedang memroses ...')
+            $('button#fetch-instagram').attr('disabled', true)
+
             $.ajax({
                 method: 'POST',
                 url: '/upload-ajax',
@@ -120,12 +123,19 @@ Beranda
                     })
                 }
             })
+                .done(function () {
+                    $('button#fetch-instagram').attr('disabled', false)
+                    $('button#fetch-instagram').text('Proses Fetching Instagram')
+                })
         })
 
         $('form#process-tiktok').submit(function (e) {
             e.preventDefault()
 
             let serializedData = $(this).serialize()
+
+            $('button#fetch-tiktok').text('Sedang memroses ...')
+            $('button#fetch-tiktok').attr('disabled', true)
 
             $.ajax({
                 method: 'POST',
@@ -142,6 +152,10 @@ Beranda
                     })
                 }
             })
+                .done(function () {
+                    $('button#fetch-tiktok').attr('disabled', false)
+                    $('button#fetch-tiktok').text('Proses Fetching TikTok')
+                })
         })
     })
 </script>

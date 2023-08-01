@@ -2,7 +2,7 @@ from apify_client import ApifyClient
 import pandas as pd
 
 def get_ig_comments(url):
-    APIFY_TOKEN = 'apify_api_qSOgfmbnODDNbxXPzffgZkiE1XvkZv3hoG92'
+    APIFY_TOKEN = 'apify_api_qDAntUROedXheACajglcVKG9OdEVj11O2BHC'
 
     # Initialize the ApifyClient with your API token
     client = ApifyClient(APIFY_TOKEN)
@@ -28,7 +28,7 @@ def get_ig_comments(url):
         'uploads/instagram_src.csv', header=['username', 'comment'], index=False)
 
 def get_tiktok_comments(url):
-    APIFY_TOKEN = 'apify_api_qSOgfmbnODDNbxXPzffgZkiE1XvkZv3hoG92'
+    APIFY_TOKEN = 'apify_api_qDAntUROedXheACajglcVKG9OdEVj11O2BHC'
 
     # Initialize the ApifyClient with your API token
     client = ApifyClient(APIFY_TOKEN)
